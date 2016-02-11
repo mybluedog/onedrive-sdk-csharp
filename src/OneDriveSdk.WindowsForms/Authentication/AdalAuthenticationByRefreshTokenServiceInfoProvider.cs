@@ -26,31 +26,32 @@ namespace Microsoft.OneDrive.Sdk
 
     /// <summary>
     /// A <see cref="ServiceInfoProvider"/> implementation for initializing a <see cref="ServiceInfo"/> to use
-    /// an authorization code for authentication.
+    /// a refresh token for authentication.
     /// </summary>
-    public class AdalAuthenticationByCodeServiceInfoProvider : ServiceInfoProvider
+    public class AdalAuthenticationByRefreshTokenServiceInfoProvider : ServiceInfoProvider
     {
-        private string authorizationCode;
+        private string refreshToken;
 
         /// <summary>
-        /// Initializes an <see cref="AdalAuthenticationByCodeServiceInfoProvider"/> that uses an
-        /// <see cref="AdalAuthenticationByCodeAuthenticationProvider"/> for authentication.
+        /// Initializes an <see cref="AdalAuthenticationByRefreshTokenServiceInfoProvider"/> that uses an
+        /// <see cref="AdalAuthenticationByRefreshTokenAuthenticationProvider"/> for authentication.
         /// </summary>
-        public AdalAuthenticationByCodeServiceInfoProvider(string authenticationCode)
-            : this(authenticationCode, null)
+        /// <param name="refreshToken">The refresh token for authentication.</param>
+        public AdalAuthenticationByRefreshTokenServiceInfoProvider(string refreshToken)
+            : this(refreshToken, null)
         {
         }
 
         /// <summary>
-        /// Initializes an <see cref="AdalAuthenticationByCodeServiceInfoProvider"/> that uses a custom
+        /// Initializes an <see cref="AdalAuthenticationByRefreshTokenServiceInfoProvider"/> that uses a custom
         /// <see cref="IAuthenticationProvider"/> for authentication.
         /// 
         /// Used for unit testing.
         /// </summary>
-        internal AdalAuthenticationByCodeServiceInfoProvider(string authorizationCode, IAuthenticationProvider authenticationProvider)
+        internal AdalAuthenticationByRefreshTokenServiceInfoProvider(string refreshToken, IAuthenticationProvider authenticationProvider)
             : base(authenticationProvider, null)
         {
-            this.authorizationCode = authorizationCode;
+            this.refreshToken = refreshToken;
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace Microsoft.OneDrive.Sdk
                     new Error
                     {
                         Code = OneDriveErrorCode.AuthenticationFailure.ToString(),
-                        Message = "AdalAuthenticationByCodeServiceInfoProvider only supports Active Directory authentication."
+                        Message = "AdalAuthenticationByRefreshTokenServiceInfoProvider only supports Active Directory authentication."
                     });
             }
 
@@ -83,7 +84,7 @@ namespace Microsoft.OneDrive.Sdk
                     new Error
                     {
                         Code = OneDriveErrorCode.AuthenticationFailure.ToString(),
-                        Message = "Service resource ID is required for authentication by code.",
+                        Message = "Service resource ID is required for authentication by refresh token.",
                     });
             }
 
@@ -109,7 +110,7 @@ namespace Microsoft.OneDrive.Sdk
 
             if (adalServiceInfo.AuthenticationProvider == null)
             {
-                adalServiceInfo.AuthenticationProvider = new AdalAuthenticationByCodeAuthenticationProvider(adalServiceInfo, authorizationCode);
+                adalServiceInfo.AuthenticationProvider = new AdalAuthenticationByRefreshTokenAuthenticationProvider(adalServiceInfo, refreshToken);
             }
 
             return adalServiceInfo;

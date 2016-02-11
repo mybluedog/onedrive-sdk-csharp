@@ -247,6 +247,7 @@ namespace Microsoft.OneDrive.Sdk
         ///         - ActiveDirectoryReturnUrl
         ///         - ActiveDirectoryServiceResource
         /// </param>
+        /// <param name="code">The authorization code to redeem for an authentication token.</param>
         /// <param name="credentialCache">The cache instance for storing user credentials.</param>
         /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending HTTP requests.</param>
         /// <returns>The <see cref="IOneDriveClient"/> for the session.</returns>
@@ -259,6 +260,37 @@ namespace Microsoft.OneDrive.Sdk
             var client = BusinessClientExtensions.GetClientUsingAuthenticationByCode(
                 appConfig,
                 code,
+                credentialCache,
+                httpProvider);
+
+            await client.AuthenticateAsync();
+
+            return client;
+        }
+
+        /// <summary>
+        /// Creates an authenticated client using the ADAL authentication by refresh token flow.
+        /// </summary>
+        /// <param name="appConfig">
+        ///     The <see cref="BusinessAppConfig"/> for the application configuration.
+        ///     Web client authentication by code requires the following to be initialized:
+        ///         - ActiveDirectoryAppId
+        ///         - ActiveDirectoryClientCertificate or ActiveDirectoryClientSecret, if the app is a web-configured app
+        ///         - ActiveDirectoryServiceResource
+        /// </param>
+        /// <param name="refreshToken">The refresh token to redeem for an authentication token.</param>
+        /// <param name="credentialCache">The cache instance for storing user credentials.</param>
+        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending HTTP requests.</param>
+        /// <returns>The <see cref="IOneDriveClient"/> for the session.</returns>
+        public static async Task<IOneDriveClient> GetAuthenticatedWebClientUsingAuthenticationByRefreshTokenAsync(
+            BusinessAppConfig appConfig,
+            string refreshToken,
+            AdalCredentialCache credentialCache = null,
+            IHttpProvider httpProvider = null)
+        {
+            var client = BusinessClientExtensions.GetClientUsingAuthenticationByRefreshToken(
+                appConfig,
+                refreshToken,
                 credentialCache,
                 httpProvider);
 
@@ -361,6 +393,7 @@ namespace Microsoft.OneDrive.Sdk
         /// <param name="appConfig">
         ///     The <see cref="BusinessAppConfig"/> for the application configuration.
         /// </param>
+        /// <param name="code">The authorization code to redeem for an authentication token.</param>
         /// <param name="credentialCache">The cache instance for storing user credentials.</param>
         /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending HTTP requests.</param>
         /// <returns>The <see cref="IOneDriveClient"/> for the session.</returns>
@@ -375,6 +408,31 @@ namespace Microsoft.OneDrive.Sdk
             return BusinessClientExtensions.GetClientInternal(
                 appConfig,
                 new AdalAuthenticationByCodeServiceInfoProvider(code),
+                credentialCache,
+                httpProvider);
+        }
+
+        /// <summary>
+        /// Creates an authenticated client using the ADAL authentication by refresh token flow.
+        /// </summary>
+        /// <param name="appConfig">
+        ///     The <see cref="BusinessAppConfig"/> for the application configuration.
+        /// </param>
+        /// <param name="refreshToken">The refresh token to redeem for an authentication token.</param>
+        /// <param name="credentialCache">The cache instance for storing user credentials.</param>
+        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending HTTP requests.</param>
+        /// <returns>The <see cref="IOneDriveClient"/> for the session.</returns>
+        internal static IOneDriveClient GetClientUsingAuthenticationByRefreshToken(
+            BusinessAppConfig appConfig,
+            string refreshToken,
+            AdalCredentialCache credentialCache = null,
+            IHttpProvider httpProvider = null)
+        {
+            appConfig.ActiveDirectoryAuthenticationServiceUrl = BusinessClientExtensions.GetAuthenticationServiceUrl();
+
+            return BusinessClientExtensions.GetClientInternal(
+                appConfig,
+                new AdalAuthenticationByRefreshTokenServiceInfoProvider(refreshToken),
                 credentialCache,
                 httpProvider);
         }

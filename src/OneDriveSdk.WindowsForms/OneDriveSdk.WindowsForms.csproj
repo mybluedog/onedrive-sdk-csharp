@@ -99,7 +99,9 @@
     <Compile Include="Authentication\AdalAppConfig.cs" />
     <Compile Include="Authentication\AdalAppOnlyAuthenticationProvider.cs" />
     <Compile Include="Authentication\AdalAppOnlyServiceInfoProvider.cs" />
+    <Compile Include="Authentication\AdalAuthenticationByRefreshTokenAuthenticationProvider.cs" />
     <Compile Include="Authentication\AdalAuthenticationByCodeAuthenticationProvider.cs" />
+    <Compile Include="Authentication\AdalAuthenticationByRefreshTokenServiceInfoProvider.cs" />
     <Compile Include="Authentication\AdalAuthenticationByCodeServiceInfoProvider.cs" />
     <Compile Include="Authentication\AdalAuthenticationProvider.cs" />
     <Compile Include="Authentication\AdalServiceInfoProvider.cs" />
