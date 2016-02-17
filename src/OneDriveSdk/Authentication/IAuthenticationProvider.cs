@@ -26,23 +26,23 @@ namespace Microsoft.OneDrive.Sdk
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Interface for retrieving authentication tokens.
+    /// Interface for retrieving access tokens.
     /// </summary>
     public interface IAuthenticationProvider
     {
         AccountSession CurrentAccountSession { get; set; }
 
         /// <summary>
-        /// Appends the authentication header to the specified web request.
+        /// Appends the authentication header to the specified request message.
         /// </summary>
         /// <param name="request">The <see cref="HttpRequestMessage"/> to authenticate.</param>
         /// <returns>The task to await.</returns>
         Task AppendAuthHeaderAsync(HttpRequestMessage request);
 
         /// <summary>
-        /// Retrieves the authentication token.
+        /// Retrieves the authenticated account session.
         /// </summary>
-        /// <returns>The authentication token.</returns>
+        /// <returns>The authenticated account session.</returns>
         Task<AccountSession> AuthenticateAsync();
 
         /// <summary>

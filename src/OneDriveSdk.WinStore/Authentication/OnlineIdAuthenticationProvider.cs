@@ -75,7 +75,7 @@ namespace Microsoft.OneDrive.Sdk
                         {
                             Code = OneDriveErrorCode.AuthenticationFailure.ToString(),
                             Message = string.Format(
-                                "Failed to retrieve a valid authentication token from OnlineIdAuthenticator for user {0}.",
+                                "Failed to retrieve a valid access token from OnlineIdAuthenticator for user {0}.",
                                 authenticationResponse.SignInName)
                         });
                 }

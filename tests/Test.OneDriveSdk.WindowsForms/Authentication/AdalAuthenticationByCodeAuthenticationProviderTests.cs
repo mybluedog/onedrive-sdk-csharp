@@ -36,7 +36,7 @@ namespace Test.OneDriveSdk.WindowsForms.Authentication
     [TestClass]
     public class AdalAuthenticationByCodeAuthenticationProviderTests : AdalAuthenticationProviderTestBase
     {
-        private const string authenticationCode = "code";
+        private const string authorizationCode = "code";
 
         private MockAuthenticationContextWrapper authenticationContextWrapper;
         private TestAdalAuthenticationByCodeAuthenticationProvider authenticationProvider;
@@ -50,7 +50,7 @@ namespace Test.OneDriveSdk.WindowsForms.Authentication
             this.adalServiceInfo = new AdalServiceInfo();
             this.adalServiceInfo.CopyFrom(this.serviceInfo);
 
-            this.authenticationProvider = new TestAdalAuthenticationByCodeAuthenticationProvider(this.adalServiceInfo, authenticationCode);
+            this.authenticationProvider = new TestAdalAuthenticationByCodeAuthenticationProvider(this.adalServiceInfo, authorizationCode);
 
             this.authenticationContextWrapper = new MockAuthenticationContextWrapper();
             this.authenticationProvider.authenticationContextWrapper = this.authenticationContextWrapper.Object;
@@ -67,7 +67,7 @@ namespace Test.OneDriveSdk.WindowsForms.Authentication
 
             this.authenticationContextWrapper
                 .Setup(wrapper => wrapper.AcquireTokenByAuthorizationCodeAsync(
-                    It.Is<string>(code => authenticationCode.Equals(code)),
+                    It.Is<string>(code => authorizationCode.Equals(code)),
                     It.Is<Uri>(returnUri => this.adalServiceInfo.ReturnUrl.Equals(returnUri.ToString())),
                     It.Is<ClientAssertionCertificate>(certificate =>
                         certificate.Certificate == clientCertificate
@@ -93,7 +93,7 @@ namespace Test.OneDriveSdk.WindowsForms.Authentication
 
             this.authenticationContextWrapper
                 .Setup(wrapper => wrapper.AcquireTokenByAuthorizationCodeAsync(
-                    It.Is<string>(code => authenticationCode.Equals(code)),
+                    It.Is<string>(code => authorizationCode.Equals(code)),
                     It.Is<Uri>(returnUri => this.serviceInfo.ReturnUrl.Equals(returnUri.ToString())),
                     It.Is<ClientCredential>(credential => this.serviceInfo.AppId.Equals(credential.ClientId)),
                     It.Is<string>(resourceValue => resource.Equals(resourceValue))))
@@ -106,7 +106,7 @@ namespace Test.OneDriveSdk.WindowsForms.Authentication
 
         [TestMethod]
         [ExpectedException(typeof(OneDriveException))]
-        public void AuthenticateResourceAsync_NoAuthenticationCode()
+        public void AuthenticateResourceAsync_NoAuthorizationCode()
         {
             try
             {

@@ -36,8 +36,8 @@ namespace Microsoft.OneDrive.Sdk
         /// Initializes an <see cref="AdalAuthenticationByCodeServiceInfoProvider"/> that uses an
         /// <see cref="AdalAuthenticationByCodeAuthenticationProvider"/> for authentication.
         /// </summary>
-        public AdalAuthenticationByCodeServiceInfoProvider(string authenticationCode)
-            : this(authenticationCode, null)
+        public AdalAuthenticationByCodeServiceInfoProvider(string authorizationCode)
+            : this(authorizationCode, null)
         {
         }
 

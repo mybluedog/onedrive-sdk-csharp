@@ -67,7 +67,7 @@ namespace Microsoft.OneDrive.Sdk
         public ServiceInfo ServiceInfo { get; private set; }
 
         /// <summary>
-        /// Appends the authentication header to the specified web request.
+        /// Appends the authentication header to the specified request message.
         /// </summary>
         /// <param name="request">The <see cref="HttpRequestMessage"/> to authenticate.</param>
         /// <returns>The task to await.</returns>
@@ -85,9 +85,9 @@ namespace Microsoft.OneDrive.Sdk
         }
 
         /// <summary>
-        /// Retrieves the authentication token.
+        /// Retrieves the authenticated account session.
         /// </summary>
-        /// <returns>The authentication token.</returns>
+        /// <returns>The authenticated account session.</returns>
         public virtual async Task<AccountSession> AuthenticateAsync()
         {
             var authResult = await this.ProcessCachedAccountSessionAsync(this.CurrentAccountSession);
@@ -120,7 +120,7 @@ namespace Microsoft.OneDrive.Sdk
                     new Error
                     {
                         Code = OneDriveErrorCode.AuthenticationFailure.ToString(),
-                        Message = "Failed to retrieve a valid authentication token for the user."
+                        Message = "Failed to retrieve a valid access token for the user."
                     });
             }
 

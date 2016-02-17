@@ -28,7 +28,7 @@ namespace Microsoft.OneDrive.Sdk
     using IdentityModel.Clients.ActiveDirectory;
 
     /// <summary>
-    /// Authenticates an application by retrieving an authentication token using a provided refresh token.
+    /// Authenticates an application by retrieving an access token using a provided refresh token.
     /// </summary>
     public class AdalAuthenticationByRefreshTokenAuthenticationProvider : AdalAuthenticationProviderBase
     {
@@ -36,10 +36,10 @@ namespace Microsoft.OneDrive.Sdk
 
         /// <summary>
         /// Constructs an <see cref="AdalAuthenticationByRefreshTokenAuthenticationProvider"/> for use with web apps that perform their own initial login
-        /// and already have a refresh token for receiving an authentication token.
+        /// and already have a refresh token for receiving an access token.
         /// </summary>
         /// <param name="serviceInfo">The information for authenticating against the service.</param>
-        /// <param name="refreshToken">The refresh token for retrieving the authentication token.</param>
+        /// <param name="refreshToken">The refresh token for retrieving the access token.</param>
         public AdalAuthenticationByRefreshTokenAuthenticationProvider(
             ServiceInfo serviceInfo,
             string refreshToken)

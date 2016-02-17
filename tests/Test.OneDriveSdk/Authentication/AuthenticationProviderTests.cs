@@ -87,7 +87,7 @@ namespace Test.OneDriveSdk
                 {
                     Assert.AreEqual(OneDriveErrorCode.AuthenticationFailure.ToString(), oneDriveException.Error.Code, "Unexpected error code.");
                     Assert.AreEqual(
-                        "Failed to retrieve a valid authentication token for the user.",
+                        "Failed to retrieve a valid access token for the user.",
                         oneDriveException.Error.Message,
                         "Unexpected error message.");
 

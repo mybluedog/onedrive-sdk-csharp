@@ -28,7 +28,7 @@ namespace Microsoft.OneDrive.Sdk
     using IdentityModel.Clients.ActiveDirectory;
 
     /// <summary>
-    /// Authenticates an application using app-only authentication tokens.
+    /// Authenticates an application using app-only access tokens.
     /// </summary>
     public class AdalAppOnlyAuthenticationProvider : AdalAuthenticationProviderBase
     {

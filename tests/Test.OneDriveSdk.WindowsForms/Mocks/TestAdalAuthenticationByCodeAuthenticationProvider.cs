@@ -39,10 +39,10 @@ namespace Test.OneDriveSdk.WindowsForms.Mocks
         /// Constructs an <see cref="TestAdalAuthenticationByCodeAuthenticationProvider"/>.
         /// </summary>
         /// <param name="serviceInfo">The information for authenticating against the service.</param>
-        /// <param name="authenticationCode">The code for retrieving the authentication token.</param>
+        /// <param name="authorizationCode">The code for retrieving the access token.</param>
         /// <param name="currentAccountSession">The current account session, used for initializing an already logged in application.</param>
-        public TestAdalAuthenticationByCodeAuthenticationProvider(AdalServiceInfo serviceInfo, string authenticationCode)
-            : base(serviceInfo, authenticationCode)
+        public TestAdalAuthenticationByCodeAuthenticationProvider(AdalServiceInfo serviceInfo, string authorizationCode)
+            : base(serviceInfo, authorizationCode)
         {
         }
 

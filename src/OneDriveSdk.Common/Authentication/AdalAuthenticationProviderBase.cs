@@ -95,7 +95,7 @@ namespace Microsoft.OneDrive.Sdk
         protected abstract Task<IAuthenticationResult> AuthenticateResourceAsync(string resource);
 
         /// <summary>
-        /// Appends the authentication header to the specified web request.
+        /// Appends the authentication header to the specified request message.
         /// </summary>
         /// <param name="request">The <see cref="HttpRequestMessage"/> to authenticate.</param>
         /// <returns>The task to await.</returns>
@@ -114,9 +114,9 @@ namespace Microsoft.OneDrive.Sdk
         }
 
         /// <summary>
-        /// Retrieves the authentication token.
+        /// Retrieves the authenticated account session.
         /// </summary>
-        /// <returns>The authentication token.</returns>
+        /// <returns>The authenticated account session.</returns>
         public async Task<AccountSession> AuthenticateAsync()
         {
             if (this.CurrentAccountSession != null && !this.CurrentAccountSession.IsExpiring())

@@ -32,20 +32,20 @@ namespace Microsoft.OneDrive.Sdk
     /// </summary>
     public class AdalAuthenticationByCodeAuthenticationProvider : AdalAuthenticationProviderBase
     {
-        internal string authenticationCode;
+        internal string authorizationCode;
 
         /// <summary>
         /// Constructs an <see cref="AdalAuthenticationByCodeAuthenticationProvider"/> for use with web apps that perform their own initial login
         /// and already have a code for receiving an authentication token.
         /// </summary>
         /// <param name="serviceInfo">The information for authenticating against the service.</param>
-        /// <param name="authenticationCode">The code for retrieving the authentication token.</param>
+        /// <param name="authorizationCode">The code for retrieving the authentication token.</param>
         public AdalAuthenticationByCodeAuthenticationProvider(
             ServiceInfo serviceInfo,
-            string authenticationCode)
+            string authorizationCode)
             : base(serviceInfo, currentAccountSession: null)
         {
-            if (string.IsNullOrEmpty(authenticationCode))
+            if (string.IsNullOrEmpty(authorizationCode))
             {
                 throw new OneDriveException(
                     new Error
@@ -56,7 +56,19 @@ namespace Microsoft.OneDrive.Sdk
             }
 
             this.allowDiscoveryService = false;
-            this.authenticationCode = authenticationCode;
+            this.authorizationCode = authorizationCode;
+        }
+
+        /// <summary>
+        /// Refreshes authentication using a new authorization code.
+        /// </summary>
+        /// <param name="authorizationCode">The authorization code to redeem for an access token.</param>
+        /// <returns></returns>
+        public Task<AccountSession> RefreshWithAuthorizationCodeAsync(string authorizationCode)
+        {
+            this.authorizationCode = authorizationCode;
+
+            return this.AuthenticateAsync();
         }
 
         /// <summary>
@@ -111,7 +123,7 @@ namespace Microsoft.OneDrive.Sdk
             var clientAssertionCertificate = new ClientAssertionCertificate(adalServiceInfo.AppId, adalServiceInfo.ClientCertificate);
 
             return this.authenticationContextWrapper.AcquireTokenByAuthorizationCodeAsync(
-                this.authenticationCode,
+                this.authorizationCode,
                 returnUri,
                 clientAssertionCertificate,
                 resource);
@@ -136,7 +148,7 @@ namespace Microsoft.OneDrive.Sdk
             var returnUri = new Uri(this.ServiceInfo.ReturnUrl);
 
             return this.authenticationContextWrapper.AcquireTokenByAuthorizationCodeAsync(
-                    this.authenticationCode,
+                    this.authorizationCode,
                     returnUri,
                     clientCredential,
                     resource);

@@ -32,7 +32,7 @@ namespace Test.OneDriveSdk.WindowsForms.Authentication
     [TestClass]
     public class AdalAuthenticationByCodeServiceInfoProviderTests
     {
-        private const string authenticationCode = "code";
+        private const string authorizationCode = "code";
 
         private AppConfig appConfig;
         private MockAdalCredentialCache credentialCache;
@@ -51,7 +51,7 @@ namespace Test.OneDriveSdk.WindowsForms.Authentication
             
             this.credentialCache = new MockAdalCredentialCache();
             this.httpProvider = new MockHttpProvider(null);
-            this.serviceInfoProvider = new AdalAuthenticationByCodeServiceInfoProvider(authenticationCode) { UserSignInName = "12345" };
+            this.serviceInfoProvider = new AdalAuthenticationByCodeServiceInfoProvider(authorizationCode) { UserSignInName = "12345" };
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Test.OneDriveSdk.WindowsForms.Authentication
         {
             var authenticationProvider = new MockAuthenticationProvider();
             this.serviceInfoProvider = new AdalAuthenticationByCodeServiceInfoProvider(
-                authenticationCode,
+                authorizationCode,
                 authenticationProvider.Object);
 
             var serviceInfo = await this.serviceInfoProvider.GetServiceInfo(
