@@ -124,7 +124,7 @@ namespace Microsoft.OneDrive.Sdk
                 return this.CurrentAccountSession;
             }
 
-            if (allowDiscoveryService && string.IsNullOrEmpty(this.ServiceInfo.ServiceResource) || string.IsNullOrEmpty(this.ServiceInfo.BaseUrl))
+            if (allowDiscoveryService && (string.IsNullOrEmpty(this.ServiceInfo.ServiceResource) || string.IsNullOrEmpty(this.ServiceInfo.BaseUrl)))
             {
                 var discoveryServiceToken = await this.GetAuthenticationTokenForResourceAsync(this.serviceInfo.DiscoveryServiceResource);
                 await this.RetrieveMyFilesServiceResourceAsync(discoveryServiceToken);

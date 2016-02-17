@@ -231,5 +231,49 @@ namespace Test.OneDriveSdk.WindowsForms.Authentication
                 throw;
             }
         }
+
+        [TestMethod]
+        public async Task RefreshWithAuthorizationCodeAsync()
+        {
+            this.authenticationProvider.ServiceInfo = this.serviceInfo;
+            this.authenticationProvider.authenticationContextWrapper = this.authenticationContextWrapper.Object;
+            this.authenticationProvider.CurrentAccountSession = new AccountSession { AccessToken = "old token" };
+            
+            this.serviceInfo.ClientSecret = "clientSecret";
+            this.serviceInfo.ServiceResource = serviceResourceId;
+            
+            var expectedAuthenticationResult = new MockAuthenticationResult();
+            expectedAuthenticationResult.SetupGet(result => result.AccessToken).Returns("new token");
+
+            string newCode = "newCode";
+
+            this.authenticationContextWrapper
+                .Setup(wrapper => wrapper.AcquireTokenByAuthorizationCodeAsync(
+                    It.Is<string>(code => newCode.Equals(code)),
+                    It.Is<Uri>(returnUri => this.serviceInfo.ReturnUrl.Equals(returnUri.ToString())),
+                    It.Is<ClientCredential>(credential => this.serviceInfo.AppId.Equals(credential.ClientId)),
+                    It.Is<string>(resourceValue => serviceResourceId.Equals(resourceValue))))
+                .Returns(Task.FromResult(expectedAuthenticationResult.Object));
+
+            var accountSession = await this.authenticationProvider.RefreshWithAuthorizationCodeAsync(newCode);
+
+            Assert.AreEqual(expectedAuthenticationResult.Object.AccessToken, accountSession.AccessToken, "Unexpected access token returned.");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(OneDriveException))]
+        public void RefreshWithAuthorizationCodeAsync_NoAuthorizationCode()
+        {
+            try
+            {
+                this.authenticationProvider.RefreshWithAuthorizationCodeAsync(null);
+            }
+            catch (OneDriveException exception)
+            {
+                Assert.AreEqual(OneDriveErrorCode.AuthenticationFailure.ToString(), exception.Error.Code, "Unexpected error thrown.");
+                Assert.AreEqual("Authorization code is required for authentication by code.", exception.Error.Message, "Unexpected error thrown.");
+                throw;
+            }
+        }
     }
 }

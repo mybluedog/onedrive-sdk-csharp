@@ -33,6 +33,7 @@ namespace Test.OneDriveSdk.WindowsForms.Mocks
         public TestAdalAuthenticationByCodeAuthenticationProvider()
             : base(null, null)
         {
+            this.allowDiscoveryService = false;
         }
 
         /// <summary>

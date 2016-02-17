@@ -66,7 +66,18 @@ namespace Microsoft.OneDrive.Sdk
         /// <returns></returns>
         public Task<AccountSession> RefreshWithAuthorizationCodeAsync(string authorizationCode)
         {
+            if (string.IsNullOrEmpty(authorizationCode))
+            {
+                throw new OneDriveException(
+                    new Error
+                    {
+                        Code = OneDriveErrorCode.AuthenticationFailure.ToString(),
+                        Message = "Authorization code is required for authentication by code.",
+                    });
+            }
+
             this.authorizationCode = authorizationCode;
+            this.CurrentAccountSession = null;
 
             return this.AuthenticateAsync();
         }
